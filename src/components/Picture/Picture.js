@@ -6,16 +6,18 @@ import React, {
   Text,
   TextInput,
   View,
-  Dimensions
+  Dimensions,
+  Image
 } from 'react-native';
 
 var window = Dimensions.get('window');
 
-class Login extends Component {
+class Picture extends Component {
   constructor(props) {
     super(props);
-    this.userName = null;
-    this.password = null;
+    this.picture = 'http://i.imgur.com/xVyoSl.jpg';
+    this.description = null;
+
     this.onChangeText = this.onChangeText.bind(this);
   }
 
@@ -32,22 +34,23 @@ class Login extends Component {
   }
 
   onChangeText(text) {
-    this.setState({userName: text});
+    this.setState({description: text})
   }
 
   render() {
+    var image;
+    if (this.picture) {
+      image =
+        <Image style={[styles.picture]} source={{uri:this.picture}}></Image>;
+    }
     return (
-        <View style={[styles.container]}>
-          <Text>Username</Text>
-          <View>
-            <TextInput style={[{
-            height: 20, width: window.width,
-            borderColor: 'gray',
-            borderWidth: 1
-            }]} onChangeText={this.onChangeText}>
-            </TextInput>
-          </View>
+      <View style={[styles.container]}>
+        {image}
+        <View>
+          <TextInput style={[styles.formText]} onChangeText={this.onChangeText}>
+          </TextInput>
         </View>
+      </View>
     );
   }
 }
@@ -58,6 +61,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  picture: {
+    height: window.width,
+    width: window.width
+  },
+  formText: {
+    height: 20,
+    width: window.width,
+    borderColor: 'gray',
+    borderWidth: 1
   },
   welcome: {
     fontSize: 20,
@@ -71,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Picture;

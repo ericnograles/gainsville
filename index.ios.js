@@ -8,19 +8,27 @@ import React, {
   Component,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
 
-import Login from './src/components/Login/Login';
+import Picture from './src/components/Picture/Picture';
+var Firebase = require('firebase');
+global.gainsvilleFirebase = new Firebase('https://gainsville.firebaseIO.com');
 
 class gainsville extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Gainsville
         </Text>
-        <Login></Login>
+        <Picture></Picture>
+        <View>
+          <TouchableOpacity>
+            <Text>Save</Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.instructions}>
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
