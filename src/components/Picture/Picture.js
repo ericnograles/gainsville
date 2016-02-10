@@ -7,10 +7,13 @@ import React, {
   TextInput,
   View,
   Dimensions,
-  Image
+  Image,
+  AlertIOS,
+  TouchableHighlight
 } from 'react-native';
 
 var window = Dimensions.get('window');
+var Firebase = require('firebase');
 
 class Picture extends Component {
   constructor(props) {
@@ -37,6 +40,38 @@ class Picture extends Component {
     this.setState({description: text})
   }
 
+  findPicture() {
+    var self = this;
+    var pictures = new Firebase('https://gainsville.firebaseIO.com/pictures');
+    return new Promise(
+      (resolve, reject) => {
+        pictures.on("value", function(snapshot) {
+          var value = snapshot.val();
+          if (value.picture === self.picture) {
+            return resolve(value);
+          }
+        }, function(err) {
+          return reject(err);
+        });
+      }
+    );
+  }
+
+  submitVote(value) {
+    var self = this;
+    var pictures = new Firebase('https://gainsville.firebaseIO.com/pictures');
+    this.findPicture()
+      .then((existingPicture) => {
+        pictures.set({
+          picture: existingPicture.picture,
+          votes: existingPicture.votes + 1
+        });
+      })
+      .catch((err) => {
+        AlertIOS.alert('Oh Noes', JSON.stringify(err));
+      });
+  }
+
   render() {
     var image;
     if (this.picture) {
@@ -50,6 +85,9 @@ class Picture extends Component {
           <TextInput style={[styles.formText]} onChangeText={this.onChangeText}>
           </TextInput>
         </View>
+        <TouchableHighlight onPress={this.submitVote.bind(this, 'upvote')}>
+          <Text>Upvote</Text>
+        </TouchableHighlight>
       </View>
     );
   }

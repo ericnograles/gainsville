@@ -13,8 +13,6 @@ import React, {
 } from 'react-native';
 
 import Picture from './src/components/Picture/Picture';
-var Firebase = require('firebase');
-global.gainsvilleFirebase = new Firebase('https://gainsville.firebaseIO.com');
 
 class gainsville extends Component {
   render() {
