@@ -9,7 +9,8 @@ import React, {
   Dimensions,
   Image,
   Alert,
-  TouchableHighlight
+  TouchableHighlight,
+  LayoutAnimation
 } from 'react-native';
 
 var window = Dimensions.get('window');
@@ -21,75 +22,107 @@ import Picture from '../Picture/Picture';
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.email = null;
-    this.password = null;
+    this.state = {
+      email: null,
+      password: null,
+      loading: false
+    };
 
     this.loginOrRegister = this.loginOrRegister.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
+    this.navigateToSwiper = this.navigateToSwiper.bind(this);
+    this.showError = this.showError.bind(this);
   }
 
   navigateToSwiper(userData) {
-    this.props.navigator.push({
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    this.props.navigator.replace({
       title: 'Gainsville',
       component: Swiper,
       props: {profile: userData}
     });
   }
 
+  showError(message) {
+    Alert.alert('Error', message);
+    this.setState({loading: false});
+  }
+
   loginOrRegister() {
     var self = this;
-    var gainsvilleFirebase = new Firebase('https://gainsville.firebaseio.com');
-    gainsvilleFirebase.authWithPassword({
-      email: self.email,
-      password: self.password
-    }, function(err, userData) {
-      if (err) {
-        if (err.code === 'INVALID_USER') {
-          gainsvilleFirebase.createUser({
-            email: self.email,
-            password: self.password
-          }, function(error, userData) {
-            if (error) {
-              console.log(error);
-            } else {
-              self.navigateToSwiper(userData);
-            }
-          });
+    self.setState({loading: true});
+    if (!this.state.email || !this.state.password) {
+      self.showError('Bruh, you need to give me an email and a password.');
+    } else {
+      var gainsvilleFirebase = new Firebase('https://gainsville.firebaseio.com');
+      gainsvilleFirebase.authWithPassword({
+        email: self.state.email,
+        password: self.state.password
+      }, function(err, userData) {
+        if (err) {
+          if (err.code === 'INVALID_USER') {
+            gainsvilleFirebase.createUser({
+              email: self.state.email,
+              password: self.state.password
+            }, function(error, userData) {
+              if (error) {
+                self.showError(error.message);
+              } else {
+                self.navigateToSwiper(userData);
+              }
+            });
+          } else {
+            self.showError(err.message);
+          }
         } else {
-          console.log(err);
+          self.navigateToSwiper(userData);
         }
-      } else {
-        self.navigateToSwiper(userData);
-      }
-    });
+      });
+    }
   }
   
   onChangeEmail(text) {
-    this.email = text;
+    this.setState({email: text});
   }
   
   onChangePassword(text) {
-    this.password = text;
+    this.setState({password: text});
   }
 
   render() {
+    var loginButton;
+    if (this.state.loading) {
+      loginButton =
+        <TouchableHighlight style={[styles.loginButton]}>
+          <Text>Logging in...</Text>
+        </TouchableHighlight>;
+    } else {
+      loginButton =
+        <TouchableHighlight style={[styles.loginButton]} onPress={this.loginOrRegister.bind(this)}>
+          <Text>Enter Gainsville</Text>
+        </TouchableHighlight>;
+    }
     return (
       <View style={[styles.container]}>
+        <Image style={[{height: window.width, width: window.width}]}
+          source={{uri: 'http://rlv.zcache.com/gainesville_script_logo_in_white_postcard-r885cf23a3c96480d92d96bbe5a9580a6_vgbaq_8byvr_324.jpg'}} />
         <View style={[styles.formContainer]}>
           <Text>Email</Text>
           <TextInput style={[styles.formText]}
                      onChangeText={this.onChangeEmail}>
           </TextInput>
+        </View>
+        <View style={[styles.formContainer]}>
           <Text>Password</Text>
           <TextInput style={[styles.formText]}
                      secureTextEntry={true}
                      keyboardType={'email-address'}
                      onChangeText={this.onChangePassword}>
           </TextInput>
-          <TouchableHighlight onPress={this.loginOrRegister.bind(this)}>
-            <Text>Enter Gainsville</Text>
-          </TouchableHighlight>
+        </View>
+        <View style={[styles.formContainerLast]}>
+          {loginButton}
         </View>
       </View>
     );
@@ -100,13 +133,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   formContainer: {
-    flex: 1,
-    flexDirection: 'column'
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    marginBottom: 0
+  },
+  formContainerLast: {
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    marginTop: 10
   },
   picture: {
     height: window.width,
@@ -118,16 +159,19 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  loginButton: {
+    backgroundColor: '#557ebf',
+    padding: 15,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOpacity: .2,
+    shadowOffset: {height: 5},
+    shadowRadius: 5,
+    justifyContent: 'center',
+    flexDirection: 'row'
+  }
 });
 
 export default Login;
