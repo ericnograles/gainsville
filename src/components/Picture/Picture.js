@@ -24,18 +24,6 @@ class Picture extends Component {
     this.onChangeText = this.onChangeText.bind(this);
   }
 
-  componentDidMount() {
-    console.log('Login componentDidMount');
-  }
-
-  componentWillMount() {
-    console.log('Login componentWillMount');
-  }
-
-  componentWillUnmount() {
-    console.log('Login componentWillUmount');
-  }
-
   onChangeText(text) {
     this.setState({description: text})
   }

@@ -9,50 +9,55 @@ import React, {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  Navigator
 } from 'react-native';
 
-import Picture from './src/components/Picture/Picture';
+import Login from './src/components/Login/Login';
+import _ from 'lodash';
 
 class gainsville extends Component {
+  constructor(props) {
+    super(props);
+    this.renderScene = this.renderScene.bind(this);
+  }
+
+  renderScene(route, nav) {
+    if (route.component) {
+      // pass navigator and route info
+      var props = { navigator: nav, route: route };
+      // expose any additional props
+      if (route.props) {
+        _.assign(props, route.props);
+      }
+      return React.createElement(route.component, props);
+    }
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Gainsville
-        </Text>
-        <Picture></Picture>
-        <View>
-          <TouchableOpacity>
-            <Text>Save</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <Navigator
+        title="Gainsville"
+        style={styles.nav}
+        renderScene={this.renderScene}
+        configureScene={(route) => {
+          if (route.sceneConfig) {
+            return route.sceneConfig;
+          }
+          return Navigator.SceneConfigs.FloatFromRight;
+        }}
+        initialRoute={{
+          component: Login, title: 'Login'
+        }}
+      />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  nav: {
+    flex: 1
+  }
 });
 
 AppRegistry.registerComponent('gainsville', () => gainsville);
