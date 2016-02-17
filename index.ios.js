@@ -1,98 +1,173 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
 'use strict';
-import React, {
-  AppRegistry,
-  Component,
-  StyleSheet,
-  Image,
-  Text,
-  View,
-  TouchableOpacity,
-  Navigator
-} from 'react-native';
 
-import Login from './src/components/Login/Login';
-import _ from 'lodash';
-import Swiper from 'react-native-swiper';
+import React, { AppRegistry, StyleSheet, Text, View, Animated, Component, PanResponder, } from 'react-native';
+import clamp from 'clamp';
 
-class gainsville extends Component {
+const People = [
+  'red',
+  'green',
+  'blue',
+  'purple',
+  'orange',
+]
+
+var SWIPE_THRESHOLD = 120;
+
+class Flix extends Component {
   constructor(props) {
     super(props);
-    this.renderScene = this.renderScene.bind(this);
+
+    this.state = {
+      pan: new Animated.ValueXY(),
+      enter: new Animated.Value(0.5),
+      person: People[0],
+    };
+
+    this._goToNextPerson = this._goToNextPerson.bind(this);
+    this._animateEntrance = this._animateEntrance.bind(this);
+    this._resetState = this._resetState.bind(this);
   }
 
-  renderScene(route, nav) {
-    if (route.component) {
-      // pass navigator and route info
-      var props = { navigator: nav, route: route };
-      // expose any additional props
-      if (route.props) {
-        _.assign(props, route.props);
+  _goToNextPerson() {
+    let currentPersonIdx = People.indexOf(this.state.person);
+    let newIdx = currentPersonIdx + 1;
+
+    this.setState({
+      person: People[newIdx > People.length - 1 ? 0 : newIdx]
+    });
+  }
+
+  componentDidMount() {
+    this._animateEntrance();
+  }
+
+  _animateEntrance() {
+    Animated.spring(
+      this.state.enter,
+      { toValue: 1, friction: 8 }
+    ).start();
+  }
+
+  componentWillMount() {
+    this._panResponder = PanResponder.create({
+      onMoveShouldSetResponderCapture: () => true,
+      onMoveShouldSetPanResponderCapture: () => true,
+
+      onPanResponderGrant: (e, gestureState) => {
+        this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
+        this.state.pan.setValue({x: 0, y: 0});
+      },
+
+      onPanResponderMove: Animated.event([
+        null, {dx: this.state.pan.x, dy: this.state.pan.y},
+      ]),
+
+      onPanResponderRelease: (e, {vx, vy}) => {
+        this.state.pan.flattenOffset();
+        var velocity;
+
+        if (vx >= 0) {
+          velocity = clamp(vx, 3, 5);
+        } else if (vx < 0) {
+          velocity = clamp(vx * -1, 3, 5) * -1;
+        }
+
+        if (Math.abs(this.state.pan.x._value) > SWIPE_THRESHOLD) {
+          Animated.decay(this.state.pan, {
+            velocity: {x: velocity, y: vy},
+            deceleration: 0.98
+          }).start(this._resetState)
+        } else {
+          Animated.spring(this.state.pan, {
+            toValue: {x: 0, y: 0},
+            friction: 4
+          }).start()
+        }
       }
-      return React.createElement(route.component, props);
-    }
+    })
   }
 
-  renderPagination(index, total, context) {
-    return (
-      <View style={{
-        position: 'absolute',
-        bottom: -25,
-        right: 10,
-      }}>
-        <Text><Text style={{
-          color: '#007aff',
-          fontSize: 20,
-        }}>{index + 1}</Text>/{total}</Text>
-      </View>
-    );
+  _resetState() {
+    this.state.pan.setValue({x: 0, y: 0});
+    this.state.enter.setValue(0);
+    this._goToNextPerson();
+    this._animateEntrance();
   }
 
   render() {
+    let { pan, enter, } = this.state;
+
+    let [translateX, translateY] = [pan.x, pan.y];
+
+    let rotate = pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: ["-30deg", "0deg", "30deg"]});
+    let opacity = pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: [0.5, 1, 0.5]})
+    let scale = enter;
+
+    let animatedCardStyles = {transform: [{translateX}, {translateY}, {rotate}, {scale}], opacity};
+
+    let yupOpacity = pan.x.interpolate({inputRange: [0, 150], outputRange: [0, 1]});
+    let yupScale = pan.x.interpolate({inputRange: [0, 150], outputRange: [0.5, 1], extrapolate: 'clamp'});
+    let animatedYupStyles = {transform: [{scale: yupScale}], opacity: yupOpacity}
+
+    let nopeOpacity = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0]});
+    let nopeScale = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0.5], extrapolate: 'clamp'});
+    let animatedNopeStyles = {transform: [{scale: nopeScale}], opacity: nopeOpacity}
+
     return (
-      <View>
-        <Swiper style={styles.wrapper} height={240}
-          renderPagination={this.renderPagination}
-          paginationStyle={{
-            bottom: -23, left: null, right: 10,
-          }} loop={false}>
-          <View style={styles.slide} title={<Text numberOfLines={1}>Aussie tourist dies at Bali hotel</Text>}>
-            <Image style={styles.image} source={{uri: 'http://c.hiphotos.baidu.com/image/w%3D310/sign=0dff10a81c30e924cfa49a307c096e66/7acb0a46f21fbe096194ceb468600c338644ad43.jpg'}} />
-          </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}>Big lie behind Nine’s new show</Text>}>
-            <Image style={styles.image} source={{uri: 'http://a.hiphotos.baidu.com/image/w%3D310/sign=4459912736a85edffa8cf822795509d8/bba1cd11728b4710417a05bbc1cec3fdfc032374.jpg'}} />
-          </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}>Why Stone split from Garfield</Text>}>
-            <Image style={styles.image} source={{uri: 'http://e.hiphotos.baidu.com/image/w%3D310/sign=9a8b4d497ed98d1076d40a30113eb807/0823dd54564e9258655f5d5b9e82d158ccbf4e18.jpg'}} />
-          </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}>Learn from Kim K to land that job</Text>}>
-            <Image style={styles.image} source={{uri: 'http://e.hiphotos.baidu.com/image/w%3D310/sign=2da0245f79ec54e741ec1c1f89399bfd/9d82d158ccbf6c818c958589be3eb13533fa4034.jpg'}} />
-          </View>
-        </Swiper>
+      <View style={styles.container}>
+        <Animated.View style={[styles.card, animatedCardStyles, {backgroundColor: this.state.person}]} {...this._panResponder.panHandlers}>
+        </Animated.View>
+
+        <Animated.View style={[styles.nope, animatedNopeStyles]}>
+          <Text style={styles.nopeText}>Nope!</Text>
+        </Animated.View>
+
+        <Animated.View style={[styles.yup, animatedYupStyles]}>
+          <Text style={styles.yupText}>Yup!</Text>
+        </Animated.View>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-  },
-  slide: {
+var styles = StyleSheet.create({
+  container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'transparent',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
   },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold',
+  card: {
+    width: 200,
+    height: 200,
+    backgroundColor: 'red',
   },
-  image: {
-    flex: 1,
+  yup: {
+    borderColor: 'green',
+    borderWidth: 2,
+    position: 'absolute',
+    padding: 20,
+    bottom: 20,
+    borderRadius: 5,
+    right: 20,
+  },
+  yupText: {
+    fontSize: 16,
+    color: 'green',
+  },
+  nope: {
+    borderColor: 'red',
+    borderWidth: 2,
+    position: 'absolute',
+    bottom: 20,
+    padding: 20,
+    borderRadius: 5,
+    left: 20,
+  },
+  nopeText: {
+    fontSize: 16,
+    color: 'red',
   }
 });
 
-AppRegistry.registerComponent('gainsville', () => gainsville);
+AppRegistry.registerComponent('gainsville', () => Flix);
