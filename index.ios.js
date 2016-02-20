@@ -9,10 +9,11 @@ import React, {
   Component,
   PanResponder,
   Image,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 
 import clamp from 'clamp';
+import * as Firebase from 'firebase';
 
 const wrestlers = [
   'http://3.bp.blogspot.com/_CGdbWRAh_KI/SSdB73ru-bI/AAAAAAAAA5I/8vpX7dAoTxE/s400/HacksawJimDuggan.jpg',
