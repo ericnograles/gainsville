@@ -13,9 +13,9 @@ import React, {
 } from 'react-native';
 
 import clamp from 'clamp';
-var Firebase = require('firebase');
-var picturesRef = new Firebase('https://gainsville.firebaseio.com/pictures');
+import Firebase from 'firebase';
 
+var picturesRef = new Firebase('https://gainsville.firebaseio.com/pictures');
 var SWIPE_THRESHOLD = 160;
 
 class Swiper extends Component {
