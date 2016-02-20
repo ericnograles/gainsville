@@ -13,20 +13,8 @@ import React, {
 } from 'react-native';
 
 import clamp from 'clamp';
-import * as Firebase from 'firebase';
-
-const wrestlers = [
-  'http://3.bp.blogspot.com/_CGdbWRAh_KI/SSdB73ru-bI/AAAAAAAAA5I/8vpX7dAoTxE/s400/HacksawJimDuggan.jpg',
-  'http://i3.coventrytelegraph.net/incoming/article7359444.ece/ALTERNATES/s615/curthennig.jpg',
-  'https://s-media-cache-ak0.pinimg.com/236x/31/b4/78/31b478375af79310b44b4772bfd8be95.jpg',
-  'http://cdn.bleacherreport.net/images_root/slides/photos/001/096/369/images-17_display_image.jpg?1310690322',
-  'https://the5iveblog.files.wordpress.com/2015/04/daveyboysmith_display_image.jpg',
-  'http://images2.houstonpress.com/imager/u/original/6775956/razor1.jpg',
-  'http://www.revelstokemountaineer.com/wp-content/uploads/2015/11/jts.jpg',
-  'https://i.ytimg.com/vi/455GalbifH8/hqdefault.jpg',
-  'http://2.bp.blogspot.com/_H8hh1K-R3qo/TUHuC4TMatI/AAAAAAAAAMg/heH-xvbb1Uw/s1600/iron-sheik.JPG',
-  'http://images.complex.com/complex/image/upload/c_limit,fl_progressive,q_80,w_680/tzdz3irrzczhlcm69xvl.jpg'
-];
+var Firebase = require('firebase');
+var picturesRef = new Firebase('https://gainsville.firebaseio.com/pictures');
 
 var SWIPE_THRESHOLD = 160;
 
@@ -37,7 +25,8 @@ class Flix extends Component {
     this.state = {
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
-      person: wrestlers[0],
+      person: null,
+      pictures: []
     };
 
     this._goToNextPerson = this._goToNextPerson.bind(this);
@@ -46,16 +35,33 @@ class Flix extends Component {
   }
 
   _goToNextPerson() {
-    let currentPersonIdx = wrestlers.indexOf(this.state.person);
+    let currentPersonIdx = this.state.pictures.indexOf(this.state.person);
     let newIdx = currentPersonIdx + 1;
 
     this.setState({
-      person: wrestlers[newIdx > wrestlers.length - 1 ? 0 : newIdx]
+      person: this.state.pictures[newIdx > this.state.pictures.length - 1 ? 0 : newIdx]
     });
   }
 
   componentDidMount() {
-    this._animateEntrance();
+    var self = this;
+    var toState = {
+      pictures: self.state.pictures,
+      person: null
+    };
+    picturesRef.orderByChild('created_at')
+      .limitToLast(100)
+      .on('value', function(snapshot) {
+        var pictureList = snapshot.val();
+
+        //console.log(pictureList);
+        Object.keys(pictureList).forEach(function(id) {
+          toState.pictures.push(pictureList[id].url);
+        });
+        toState.person = toState.pictures[0];
+        self.setState(toState);
+        self._animateEntrance();
+      });
   }
 
   _animateEntrance() {
