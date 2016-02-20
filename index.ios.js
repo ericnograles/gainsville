@@ -18,14 +18,14 @@ var picturesRef = new Firebase('https://gainsville.firebaseio.com/pictures');
 
 var SWIPE_THRESHOLD = 160;
 
-class Flix extends Component {
+class Swiper extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
-      person: null,
+      person: {},
       pictures: []
     };
 
@@ -35,8 +35,8 @@ class Flix extends Component {
   }
 
   _goToNextPerson() {
-    let currentPersonIdx = this.state.pictures.indexOf(this.state.person);
-    let newIdx = currentPersonIdx + 1;
+    var currentPersonIdx = this.state.pictures.indexOf(this.state.person);
+    var newIdx = currentPersonIdx + 1;
 
     this.setState({
       person: this.state.pictures[newIdx > this.state.pictures.length - 1 ? 0 : newIdx]
@@ -56,7 +56,7 @@ class Flix extends Component {
 
         //console.log(pictureList);
         Object.keys(pictureList).forEach(function(id) {
-          toState.pictures.push(pictureList[id].url);
+          toState.pictures.push(pictureList[id]);
         });
         toState.person = toState.pictures[0];
         self.setState(toState);
@@ -139,7 +139,7 @@ class Flix extends Component {
     return (
       <View style={styles.container}>
         <Animated.View style={[styles.card, animatedCardStyles]} source={{uri: this.state.person}} {...this._panResponder.panHandlers}>
-          <Image style={[styles.card]} source={{uri: this.state.person}}></Image>
+          <Image style={[styles.card]} source={{uri: this.state.person.url}}></Image>
         </Animated.View>
 
         <Animated.View style={[styles.nope, animatedNopeStyles]}>
@@ -194,4 +194,4 @@ var styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('gainsville', () => Flix);
+AppRegistry.registerComponent('gainsville', () => Swiper);
