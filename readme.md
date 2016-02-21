@@ -11,7 +11,7 @@ On top of React Native, this project also includes a [Gulp](http://gulpjs.com/) 
 ## Prerequisites
 * A Mac (sorry, Windows users!)
 * [Node.js](https://nodejs.org) - v4.2.6 or higher
-* [Homebrew](https://brew.sh)
+* [Homebrew](http://brew.sh)
 * [Xcode](https://developer.apple.com/xcode/download/)
 
 ## Installation Instructions 
