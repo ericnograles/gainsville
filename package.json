@@ -15,5 +15,12 @@
     "redux": "^3.3.1",
     "redux-devtools": "^3.1.1",
     "uuid": "^2.0.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-replace": "^0.5.4",
+    "gulp-shell": "^0.5.1",
+    "gulp-util": "^3.0.7",
+    "yargs": "^3.30.0"
   }
 }
