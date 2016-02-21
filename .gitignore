@@ -1,3 +1,4 @@
+/ios/gainsville/AppDelegate.m
 # OSX
 #
 .DS_Store
@@ -10,6 +11,7 @@ build/
 *.mode1v3
 !default.mode1v3
 *.mode2v3
+/src/common/constants/environment.js
 /node_modules
 !default.mode2v3
 *.perspectivev3
