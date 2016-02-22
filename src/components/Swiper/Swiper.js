@@ -137,6 +137,9 @@ class Swiper extends Component {
 
     return (
       <View style={styles.container}>
+        <View>
+          <Text>Hi GDA!</Text>
+        </View>
         <Animated.View style={[styles.card, animatedCardStyles]} source={{uri: this.state.person}} {...this._panResponder.panHandlers}>
           <Image style={[styles.card]} source={{uri: this.state.person.url}}></Image>
         </Animated.View>
