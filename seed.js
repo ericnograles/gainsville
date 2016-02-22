@@ -14,25 +14,24 @@ const wrestlers = [
 var uuid = require('uuid');
 var picturesRef = new Firebase('https://gainsville.firebaseio.com/pictures');
 
-//wrestlers.forEach(function(wrestler) {
-//  wrestler.created_at = new Date().getTime();
-//  wrestler.yup = {'Eric': true}
-//  picturesRef
-//    .child(uuid.v4())
-//    .set(wrestler);
-//});
+wrestlers.forEach(function(wrestler) {
+  wrestler.created_at = new Date().getTime();
+  picturesRef
+    .child(uuid.v4())
+    .set(wrestler);
+});
 
+
+//picturesRef.orderByChild('created_at')
+//  .limitToLast(100)
+//  .on('value', function(snapshot) {
+//    var pictureList = snapshot.val();
 //
-picturesRef.orderByChild('created_at')
-  .limitToLast(100)
-  .on('value', function(snapshot) {
-    var pictureList = snapshot.val();
-
-    //console.log(pictureList);
-    Object.keys(pictureList).forEach(function(id) {
-      if (pictureList[id].yup['Eric']) {
-        console.log(pictureList[id]);
-      }
-    });
-  });
+//    //console.log(pictureList);
+//    Object.keys(pictureList).forEach(function(id) {
+//      if (pictureList[id].yup['Eric']) {
+//        console.log(pictureList[id]);
+//      }
+//    });
+//  });
 
