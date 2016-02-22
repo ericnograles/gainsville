@@ -1,1 +1,1 @@
-module.exports = {"API_PATH":"http://192.168.0.11:1337"};    
+module.exports = {"FIREBASE_PATH":"https://gainsville.firebaseio.com"};    

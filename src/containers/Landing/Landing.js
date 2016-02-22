@@ -35,9 +35,6 @@ class Landing extends Component {
   render() {
     return (
       <View style={[styles.container]}>
-        <View>
-          <Text>Hi GDA!</Text>
-        </View>
         <Swiper profile={this.props.profile} navigator={this.props.navigator}></Swiper>
       </View>
     );

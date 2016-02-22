@@ -104,16 +104,16 @@ class Login extends Component {
     }
     return (
       <View style={[styles.container]}>
-        <Image style={[{height: window.width, width: window.width}]}
-          source={{uri: 'http://rlv.zcache.com/gainesville_script_logo_in_white_postcard-r885cf23a3c96480d92d96bbe5a9580a6_vgbaq_8byvr_324.jpg'}} />
+        <Image style={[styles.logo]} resizeMode="stretch"
+          source={require('../../assets/images/logo-main.png')} />
         <View style={[styles.formContainer]}>
-          <Text>Email</Text>
+          <Text style={[styles.formLabel]}>Email</Text>
           <TextInput style={[styles.formText]}
                      onChangeText={this.onChangeEmail}>
           </TextInput>
         </View>
         <View style={[styles.formContainer]}>
-          <Text>Password</Text>
+          <Text style={[styles.formLabel]}>Password</Text>
           <TextInput style={[styles.formText]}
                      secureTextEntry={true}
                      keyboardType={'email-address'}
@@ -134,29 +134,40 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#000'
+  },
+  logo: {
+    height: window.width,
+    width: window.width
   },
   formContainer: {
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    marginBottom: 0
+    marginBottom: 0,
+    paddingLeft: 10,
+    paddingTop: 15
   },
   formContainerLast: {
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    marginTop: 10
+    paddingTop: 25,
   },
   picture: {
     height: window.width,
     width: window.width
   },
+  formLabel: {
+    height: 20,
+    color: '#fff'
+  },
   formText: {
     height: 20,
-    width: window.width,
+    width: window.width - 20,
     borderColor: 'gray',
-    borderWidth: 1
+    borderWidth: 1,
+    color: '#fff'
   },
   loginButton: {
     backgroundColor: '#557ebf',
