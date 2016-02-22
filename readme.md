@@ -33,6 +33,8 @@ On top of React Native, this project also includes a [Gulp](http://gulpjs.com/) 
 
 ## Running on iOS Device
 
+**Important Note**: You will need to register for an [Apple Developer Account](https://developer.apple.com/register/) to run this on your own device.  You will need to create your own Developer Certificate and Provisioning Profile, which you can then use in the Xcode project to sign your app.
+
 1. Plug in your iPhone to your Mac
 2. Go to the directory where you cloned this repo
 3. Run `gulp --env device`

@@ -13,11 +13,10 @@ import React, {
   LayoutAnimation
 } from 'react-native';
 
-var window = Dimensions.get('window');
-var Firebase = require('firebase');
-import Swiper from '../Swiper/Swiper';
+import Firebase from 'firebase';
+import Landing from '../../containers/Landing/Landing';
 
-import Picture from '../Picture/Picture';
+var window = Dimensions.get('window');
 
 class Login extends Component {
   constructor(props) {
@@ -37,9 +36,9 @@ class Login extends Component {
 
   navigateToSwiper(userData) {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-    this.props.navigator.replace({
+    this.props.navigator.push({
       title: 'Gainsville',
-      component: Swiper,
+      component: Landing,
       props: {profile: userData}
     });
   }

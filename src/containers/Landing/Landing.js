@@ -3,14 +3,21 @@ import React, {
   Component,
   StyleSheet,
   View,
-  Dimensions
+  Dimensions,
+  Text
 } from 'react-native';
 
 var window = Dimensions.get('window');
 
+import Swiper from '../../components/Swiper/Swiper';
+
 class Landing extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+
+    }
   }
 
   componentDidMount() {
@@ -26,12 +33,22 @@ class Landing extends Component {
   }
 
   render() {
-
+    return (
+      <View style={[styles.container]}>
+        <View>
+          <Text>Hi GDA!</Text>
+        </View>
+        <Swiper profile={this.props.profile} navigator={this.props.navigator}></Swiper>
+      </View>
+    );
   }
 }
 
 var styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+    paddingTop: 40
+  }
 });
 
 export default Landing;

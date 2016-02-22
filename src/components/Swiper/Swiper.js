@@ -52,8 +52,6 @@ class Swiper extends Component {
       .limitToLast(100)
       .on('value', function(snapshot) {
         var pictureList = snapshot.val();
-
-        //console.log(pictureList);
         Object.keys(pictureList).forEach(function(id) {
           toState.pictures.push(pictureList[id]);
         });
@@ -89,8 +87,10 @@ class Swiper extends Component {
         var velocity;
 
         if (vx >= 0) {
+          // Swipe Right
           velocity = clamp(vx, 3, 5);
         } else if (vx < 0) {
+          // Swipe left
           velocity = clamp(vx * -1, 3, 5) * -1;
         }
 
@@ -137,9 +137,6 @@ class Swiper extends Component {
 
     return (
       <View style={styles.container}>
-        <View>
-          <Text>Hi GDA!</Text>
-        </View>
         <Animated.View style={[styles.card, animatedCardStyles]} source={{uri: this.state.person}} {...this._panResponder.panHandlers}>
           <Image style={[styles.card]} source={{uri: this.state.person.url}}></Image>
         </Animated.View>
