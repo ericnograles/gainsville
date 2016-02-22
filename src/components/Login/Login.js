@@ -106,7 +106,7 @@ class Login extends Component {
       <View style={[styles.container]}>
         <Image style={[styles.logo]} resizeMode="stretch"
           source={require('../../assets/images/logo-main.png')} />
-        <View style={[styles.formContainer, {paddingTop: 0}]}>
+        <View style={[styles.formContainer]}>
           <Text style={[styles.formLabel]}>Email</Text>
           <TextInput style={[styles.formText]}
                      onChangeText={this.onChangeEmail}>
@@ -163,10 +163,11 @@ const styles = StyleSheet.create({
     color: '#fff'
   },
   formText: {
-    height: 20,
+    height: 40,
     width: window.width - 40,
-    borderColor: 'gray',
-    borderWidth: 1,
+    backgroundColor: 'gray',
+    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
     color: '#fff'
   },
   loginButton: {
