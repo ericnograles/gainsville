@@ -94,35 +94,35 @@ class Login extends Component {
     if (this.state.loading) {
       loginButton =
         <TouchableHighlight style={[styles.loginButton]}>
-          <Text>Logging in...</Text>
+          <Text style={[{color: '#fff'}]}>LOGGING IN...</Text>
         </TouchableHighlight>;
     } else {
       loginButton =
         <TouchableHighlight style={[styles.loginButton]} onPress={this.loginOrRegister.bind(this)}>
-          <Text>Enter Gainsville</Text>
+          <Text style={[{color: '#fff'}]}>ENTER</Text>
         </TouchableHighlight>;
     }
     return (
       <View style={[styles.container]}>
-        <Image style={[styles.logo]} resizeMode="stretch"
-          source={require('../../assets/images/logo-main.png')} />
-        <View style={[styles.formContainer]}>
-          <Text style={[styles.formLabel]}>Email</Text>
-          <TextInput style={[styles.formText]}
-                     onChangeText={this.onChangeEmail}>
-          </TextInput>
-        </View>
-        <View style={[styles.formContainer]}>
-          <Text style={[styles.formLabel]}>Password</Text>
-          <TextInput style={[styles.formText]}
-                     secureTextEntry={true}
-                     keyboardType={'email-address'}
-                     onChangeText={this.onChangePassword}>
-          </TextInput>
-        </View>
-        <View style={[styles.formContainerLast]}>
-          {loginButton}
-        </View>
+          <Image style={[styles.logo]} resizeMode="stretch"
+            source={require('../../assets/images/logo-main.png')} />
+          <View style={[styles.formContainer]}>
+            <Text style={[styles.formLabel]}>Email</Text>
+            <TextInput style={[styles.formText]}
+                       onChangeText={this.onChangeEmail}>
+            </TextInput>
+          </View>
+          <View style={[styles.formContainer]}>
+            <Text style={[styles.formLabel]}>Password</Text>
+            <TextInput style={[styles.formText]}
+                       secureTextEntry={true}
+                       keyboardType={'email-address'}
+                       onChangeText={this.onChangePassword}>
+            </TextInput>
+          </View>
+          <View style={[styles.formContainerLast]}>
+            {loginButton}
+          </View>
       </View>
     );
   }
@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#000'
   },
   logo: {
     height: window.width,
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderRightWidth: 0,
     marginBottom: 0,
-    paddingLeft: 10,
+    paddingLeft: 0,
     paddingTop: 10
   },
   formContainerLast: {
@@ -165,13 +164,13 @@ const styles = StyleSheet.create({
   formText: {
     height: 40,
     width: window.width - 40,
-    backgroundColor: 'gray',
-    borderBottomColor: 'gray',
-    borderBottomWidth: 1,
+    backgroundColor: '#1f2429',
+    borderWidth: 1,
+    borderColor: 'gray',
     color: '#fff'
   },
   loginButton: {
-    backgroundColor: '#557ebf',
+    backgroundColor: '#a60707',
     padding: 15,
     paddingLeft: 30,
     paddingRight: 30,
@@ -181,7 +180,8 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 5},
     shadowRadius: 5,
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: window.width - 40
   }
 });
 
