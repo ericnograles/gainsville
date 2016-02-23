@@ -4,7 +4,8 @@ import React, {
   StyleSheet,
   View,
   Dimensions,
-  Text
+  Text,
+  Image
 } from 'react-native';
 
 var window = Dimensions.get('window');
@@ -34,15 +35,19 @@ class Landing extends Component {
 
   render() {
     return (
-      <View style={[styles.container]}>
-
+      <Image style={[styles.background]} source={require('../../assets/images/background.png')} resizeMode="cover">
         <Swiper profile={this.props.profile} navigator={this.props.navigator}></Swiper>
-      </View>
+      </Image>
     );
   }
 }
 
 var styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    height: window.height,
+    width: window.width
+  },
   container: {
     flex: 1,
     paddingTop: 40

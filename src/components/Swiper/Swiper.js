@@ -205,8 +205,7 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    alignItems: 'center'
   },
   card: {
     width: window.width,
@@ -220,10 +219,11 @@ var styles = StyleSheet.create({
     bottom: 20,
     borderRadius: 5,
     right: 20,
+    backgroundColor: '#1f2429',
   },
   yupText: {
     fontSize: 16,
-    color: 'green',
+    color: '#fff',
   },
   nope: {
     borderColor: 'red',
@@ -233,10 +233,11 @@ var styles = StyleSheet.create({
     padding: 20,
     borderRadius: 5,
     left: 20,
+    backgroundColor: '#1f2429',
   },
   nopeText: {
     fontSize: 16,
-    color: 'red',
+    color: '#fff',
   }
 });
 

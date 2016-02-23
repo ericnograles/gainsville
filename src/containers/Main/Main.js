@@ -1,6 +1,7 @@
 'use strict';
 import React, { Component, Navigator, StyleSheet } from 'react-native';
 import StartScreen from '../StartScreen/StartScreen';
+import Landing from '../Landing/Landing';
 import _ from 'lodash';
 
 class Main extends Component {
