@@ -50,7 +50,7 @@ class Login extends Component {
     if (state.status === 'logging_in') {
       self.setState({loading: true});
     } else if (state.error) {
-      self.showError(error.message);
+      self.showError(state.error.message);
     } else {
       self.navigateToSwiper(state.userData);
     }
