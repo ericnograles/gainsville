@@ -12,20 +12,10 @@ import React, {
 } from 'react-native';
 
 import clamp from 'clamp';
-import Firebase from 'firebase';
+import MediaActions from '../../actions/MediaActions';
+import MediaStore from '../../stores/MediaStore';
 
-var picturesRef = new Firebase('https://gainsville.firebaseio.com/pictures');
 var SWIPE_THRESHOLD = 160;
-
-function getCurrentValue(ref) {
-  return new Promise(
-    (resolve, reject) => {
-      ref.on('value', function(snapshot) {
-        return resolve(snapshot.val());
-      });
-    }
-  );
-}
 
 class Swiper extends Component {
   constructor(props) {
@@ -34,67 +24,40 @@ class Swiper extends Component {
     this.state = {
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
-      person: {},
-      pictures: []
+      person: MediaStore.getState().person,
+      pictures: MediaStore.getState().pictures
     };
 
-    this._goToNextPerson = this._goToNextPerson.bind(this);
     this._animateEntrance = this._animateEntrance.bind(this);
     this._resetState = this._resetState.bind(this);
     this._swipedLeft = this._swipedLeft.bind(this);
     this._swipedRight = this._swipedRight.bind(this);
+    this.onMediaStoreChange = this.onMediaStoreChange.bind(this);
   }
 
-  _swipedLeft(pictureRef) {
-    getCurrentValue(pictureRef)
-      .then((value) => {
-        var bruh_do_you_lift = value.bruh_do_you_lift || 0;
-        bruh_do_you_lift += 1;
-        pictureRef.update({
-          bruh_do_you_lift: bruh_do_you_lift
-        });
-      });
+  _swipedLeft() {
+    MediaActions.dislike(this.state.person.id);
   }
   
-  _swipedRight(pictureRef) {
-    getCurrentValue(pictureRef)
-      .then((value) => {
-        var nice_gains_bruh = value.nice_gains_bruh || 0;
-        nice_gains_bruh += 1;
-        pictureRef.update({
-          nice_gains_bruh: nice_gains_bruh
-        });
-      });
+  _swipedRight() {
+    MediaActions.like(this.state.person.id);
   }
 
-  _goToNextPerson() {
-    var currentPersonIdx = this.state.pictures.indexOf(this.state.person);
-    var newIdx = currentPersonIdx + 1;
-
-    this.setState({
-      person: this.state.pictures[newIdx > this.state.pictures.length - 1 ? 0 : newIdx]
-    });
+  onMediaStoreChange(state) {
+    if (!state.error) {
+      this.setState({pictures: state.pictures, person: state.person});
+      this._animateEntrance();
+    }
   }
 
   componentDidMount() {
     var self = this;
-    var toState = {
-      pictures: self.state.pictures,
-      person: null
-    };
-    picturesRef.orderByChild('created_at')
-      .limitToLast(100)
-      .on('value', function(snapshot) {
-        var pictureList = snapshot.val();
-        Object.keys(pictureList).forEach(function(id) {
-          pictureList[id].id = id;
-          toState.pictures.push(pictureList[id]);
-        });
-        toState.person = toState.pictures[0];
-        self.setState(toState);
-        self._animateEntrance();
-        picturesRef.off('value');
-      });
+    MediaStore.listen(this.onMediaStoreChange);
+    MediaActions.feed();
+  }
+
+  componentWillUnmount() {
+    MediaStore.unlisten(this.onMediaStoreChange);
   }
 
   _animateEntrance() {
@@ -146,21 +109,18 @@ class Swiper extends Component {
   }
 
   _resetState() {
-    var pictureRef = new Firebase('https://gainsville.firebaseio.com/pictures/' + this.state.person.id);
     if (this.state.pan.x._value > 0) {
       // Swiped Right
       console.log('swiped right');
-      this._swipedRight(pictureRef);
+      this._swipedRight();
     } else if (this.state.pan.x._value < 0) {
       // Swiped Left
       console.log('swiped left');
-      this._swipedLeft(pictureRef);
+      this._swipedLeft();
 
     }
     this.state.pan.setValue({x: 0, y: 0});
     this.state.enter.setValue(0);
-    this._goToNextPerson();
-    this._animateEntrance();
   }
 
   render() {
