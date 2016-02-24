@@ -9,5 +9,3 @@ Welcome to Gainsville, where _you_ can share your gains with the world!
 
 * **Novice**: [Gainesville Dev Academy (February 25, 2016)](https://github.com/ericnograles/gainsville/tree/gda-demo)
 * **Expert**: [352 Developer Conference (February 26, 2016)](https://github.com/ericnograles/gainsville/tree/devconf-demo)
-
-
