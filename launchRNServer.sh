@@ -33,7 +33,6 @@ pkill node
 
 # Install NVM
 nvm install 4.2.6
-nvm use 4.2.6
 
 # Use npm@3.7.2
 npm install -g npm@3.7.2
@@ -41,7 +40,7 @@ npm install -g npm@3.7.2
 # npm install
 npm cache clean && npm install
 
-# TODO: Remove the line below when RN 0.20 drops
+# TODO: Remove the line below when RN 0.21 drops
 find . -name 'fbjs' -print | grep "\./node_modules/fbjs" -v | xargs rm -rf
 
 # Run gulp based on environment variable
