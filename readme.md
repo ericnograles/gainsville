@@ -30,13 +30,12 @@ This bash file will ensure you use a specific version of Node (4.2.6) and handle
 6. Run `npm install -g react-native-cli gulp`
 7. Clone this repository
     * In a directory of your choice, run `git clone https://github.com/ericnograles/gainsville.git`
-8. Run `cd gainsville/`
-9. Run `./launchRNServer.sh --env sim`
 
 ## Running on iOS Simulator
 
 1. Go to the directory where you cloned this repo
-2. Run `react-native run-ios`
+2. Run `./launchRNServer.sh --env sim`
+3. Run `react-native run-ios`
 
 ## Running on iOS Device
 
@@ -46,7 +45,7 @@ This bash file will ensure you use a specific version of Node (4.2.6) and handle
 
 1. Plug in your iPhone to your Mac
 2. Go to the directory where you cloned this repo
-3. Run `gulp --env device`
+3. Run `./launchRNServer.sh --env device`
 4. Open Xcode
 5. In Xcode, open the project `/gainsville/ios/gainsville.xcodeproj`
 6. In the device selection above to the right of the stop button, select your iPhone
@@ -57,6 +56,7 @@ This bash file will ensure you use a specific version of Node (4.2.6) and handle
 1. Plug in your Android device to your Mac
 2. Go to the directory where you cloned this repo
 3. Run `adb reverse tcp:8081 tcp:8081`
-4. Run `react-native run-android`
+4. Run `./launchRNServer.sh --env sim`
+5. Run `react-native run-android`
 
 
