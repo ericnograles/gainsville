@@ -31,6 +31,7 @@ class UserStore {
     } else {
       toState.status = 'authenticated';
       toState.userData = payload.data;
+      toState.error = null;
     }
 
     this.setState(toState);
