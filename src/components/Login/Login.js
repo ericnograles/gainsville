@@ -15,6 +15,8 @@ import React, {
 
 import Firebase from 'firebase';
 import Landing from '../../containers/Landing/Landing';
+import UserActions from '../../actions/UserActions';
+import UserStore from '../../stores/UserStore';
 
 var window = Dimensions.get('window');
 
@@ -27,11 +29,31 @@ class Login extends Component {
       loading: false
     };
 
+    this.onUserStoreChange = this.onUserStoreChange.bind(this);
     this.loginOrRegister = this.loginOrRegister.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.navigateToSwiper = this.navigateToSwiper.bind(this);
     this.showError = this.showError.bind(this);
+  }
+
+  componentDidMount() {
+    UserStore.listen(this.onUserStoreChange);
+  }
+
+  componentWillUnmount() {
+    UserStore.unlisten(this.onUserStoreChange);
+  }
+
+  onUserStoreChange(state) {
+    var self = this;
+    if (state.status === 'logging_in') {
+      self.setState({loading: true});
+    } else if (state.error) {
+      self.showError(error.message);
+    } else {
+      self.navigateToSwiper(state.userData);
+    }
   }
 
   navigateToSwiper(userData) {
@@ -50,34 +72,11 @@ class Login extends Component {
 
   loginOrRegister() {
     var self = this;
-    self.setState({loading: true});
     if (!this.state.email || !this.state.password) {
       self.showError('Bruh, you need to give me an email and a password.');
     } else {
-      var gainsvilleFirebase = new Firebase('https://gainsville.firebaseio.com');
-      gainsvilleFirebase.authWithPassword({
-        email: self.state.email,
-        password: self.state.password
-      }, function(err, userData) {
-        if (err) {
-          if (err.code === 'INVALID_USER') {
-            gainsvilleFirebase.createUser({
-              email: self.state.email,
-              password: self.state.password
-            }, function(error, userData) {
-              if (error) {
-                self.showError(error.message);
-              } else {
-                self.navigateToSwiper(userData);
-              }
-            });
-          } else {
-            self.showError(err.message);
-          }
-        } else {
-          self.navigateToSwiper(userData);
-        }
-      });
+      UserActions.startLogin();
+      UserActions.login(this.state.email, this.state.password);
     }
   }
   
