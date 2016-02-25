@@ -4,7 +4,7 @@
 ## Overview
 Welcome to Gainsville, where _you_ can share your gains with the world! 
 
-This is the sample [React Native](https://facebook.github.io/react-native/) project as presented by Eric Nograles to the Gainesville Dev Academy on February 25, 2016.  RN allows you to build _true_ native mobile applications using one JavaScript codebase.  Whereas platforms like Ionic and Cordova are really just "webpages presented as apps", in RN, you are building full fledged native applications using JavaScript!
+This is the sample [React Native](https://facebook.github.io/react-native/) project as presented by Eric Nograles to the Gainesville Dev Academy on February 26, 2016.  RN allows you to build _true_ native mobile applications using one JavaScript codebase.  Whereas platforms like Ionic and Cordova are really just "webpages presented as apps", in RN, you are building full fledged native applications using JavaScript!
 
 On top of React Native, this project also includes a [Gulp](http://gulpjs.com/) file that helps automate some of the build processes you will have.  As React Native is barely even a year old, the tooling is still immature.
 
