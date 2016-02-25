@@ -14,6 +14,7 @@ class GainsvilleCamera extends Component {
   }
 
   _takePicture() {
+    var self = this;
     this.camera.capture()
       .then((data) => {
         var picturesRef = new Firebase('https://gainsville.firebaseio.com/pictures');
@@ -23,6 +24,8 @@ class GainsvilleCamera extends Component {
             url: 'data:image/png;base64,' + data,
             user_name: this.props.email || 'testing'
           });
+
+        this.props.navigator.pop();
       })
       .catch(err => {
         console.error(err)
