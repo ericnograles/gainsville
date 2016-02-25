@@ -11,6 +11,7 @@ import React, {
 var window = Dimensions.get('window');
 
 import Swiper from '../../components/Swiper/Swiper';
+import NavigationBar from '../../components/NavigationBar/NavigationBar';
 
 class Landing extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class Landing extends Component {
   render() {
     return (
       <Image style={[styles.background]} source={require('../../assets/images/background.png')} resizeMode="cover">
+        <NavigationBar hasBackButton={true}></NavigationBar>
         <Swiper profile={this.props.profile} navigator={this.props.navigator}></Swiper>
       </Image>
     );
