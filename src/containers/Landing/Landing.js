@@ -13,6 +13,7 @@ var window = Dimensions.get('window');
 
 import Swiper from '../../components/Swiper/Swiper';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
+import GainsvilleCamera from '../GainsvilleCamera/GainsvilleCamera';
 
 class Landing extends Component {
   constructor(props) {
@@ -24,7 +25,10 @@ class Landing extends Component {
   }
 
   _showYourGains() {
-
+    this.props.navigator.push({
+      component: GainsvilleCamera,
+      props: {profile: this.props.profile}
+    });
   }
 
   componentDidMount() {

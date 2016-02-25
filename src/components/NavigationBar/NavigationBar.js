@@ -15,6 +15,7 @@ class NavigationBar extends Component {
     super(props);
 
     this._logout = this._logout.bind(this);
+    this._back = this._back.bind(this);
   }
 
   _logout() {
@@ -24,11 +25,15 @@ class NavigationBar extends Component {
     });
   }
 
+  _back() {
+    this.props.navigator.pop();
+  }
+
   render() {
     var backButton;
     if (this.props.hasBackButton) {
       backButton =
-        <TouchableHighlight style={[styles.backButton]}>
+        <TouchableHighlight onPress={this._back} style={[styles.backButton]}>
           <Text style={[styles.backButtonText]}>Back</Text>
         </TouchableHighlight>;
     }
@@ -68,7 +73,15 @@ var styles = StyleSheet.create({
     backgroundColor: '#1f2429',
   },
   backButton: {
-    padding: 20
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: -25,
+    right: 10,
+    padding: 10,
+    width: 60,
+    borderRadius: 10,
+    backgroundColor: '#a60707'
   },
   backButtonText: {
     color: '#fff'
