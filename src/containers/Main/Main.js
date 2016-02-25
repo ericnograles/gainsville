@@ -36,7 +36,7 @@ class Main extends Component {
           return Navigator.SceneConfigs.FloatFromRight;
         }}
         initialRoute={{
-        component: Landing, title: 'Welcome to Gainsville'
+        component: StartScreen, title: 'Welcome to Gainsville'
         }}>
       </Navigator>
     )

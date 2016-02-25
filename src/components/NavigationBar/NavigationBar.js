@@ -1,26 +1,56 @@
-import React, { View, Image, Text, Component, StyleSheet, Dimensions, TouchableHighlight } from 'react-native';
+import React, {
+  View,
+  Image,
+  Text,
+  Component,
+  StyleSheet,
+  Dimensions,
+  TouchableHighlight,
+  LayoutAnimation
+} from 'react-native';
+import StartScreen from '../../containers/StartScreen/StartScreen';
 
 class NavigationBar extends Component {
   constructor(props) {
     super(props);
+
+    this._logout = this._logout.bind(this);
+  }
+
+  _logout() {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    this.props.navigator.replace({
+      component: StartScreen
+    });
   }
 
   render() {
     var backButton;
     if (this.props.hasBackButton) {
       backButton =
-        <TouchableHighlight>
-          <Text>Back</Text>
+        <TouchableHighlight style={[styles.backButton]}>
+          <Text style={[styles.backButtonText]}>Back</Text>
+        </TouchableHighlight>;
+    }
+
+    var logoutButton;
+    if (this.props.hasLogoutButton) {
+      logoutButton =
+        <TouchableHighlight onPress={this._logout} style={[styles.logoutButton]}>
+          <Text style={[styles.logoutButtonText]}>X</Text>
         </TouchableHighlight>;
     }
     return (
       <View style={[styles.container]}>
-        <TouchableHighlight style={[styles.backButton]}>
-          <Text style={[styles.backButtonText]}>Back</Text>
-        </TouchableHighlight>
+        <View>
+          {backButton}
+        </View>
         <Image style={[styles.logo]}
                resizeMode={Image.resizeMode.cover}
                source={require('../../assets/images/logo-text.png')}></Image>
+        <View style={[styles.button]}>
+          {logoutButton}
+        </View>
       </View>
     )
   }
@@ -29,17 +59,38 @@ class NavigationBar extends Component {
 var window = Dimensions.get('window');
 var styles = StyleSheet.create({
   container: {
-    height: 50,
+    height: 80,
+    width: window.width,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 20
+    paddingTop: 40,
+    backgroundColor: '#1f2429',
   },
   backButton: {
-    //paddingRight: 40
+    padding: 20
   },
   backButtonText: {
     color: '#fff'
+  },
+  button: {
+    paddingBottom: 20,
+  },
+  logoutButton: {
+    position: 'absolute',
+    justifyContent: 'center',
+    top: -6,
+    left: 40,
+    height: 30,
+    width: 30,
+    borderRadius: 30,
+    padding: 10,
+    backgroundColor: '#a60707'
+  },
+  logoutButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold'
   },
   logo: {
     height: 30,

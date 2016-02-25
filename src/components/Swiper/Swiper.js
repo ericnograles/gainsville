@@ -203,10 +203,10 @@ class Swiper extends Component {
 var window = Dimensions.get('window');
 var styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
+    paddingTop: 120,
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center'
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   card: {
     width: window.width - 80,
