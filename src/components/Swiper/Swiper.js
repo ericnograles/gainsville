@@ -163,13 +163,14 @@ class Swiper extends Component {
 var window = Dimensions.get('window');
 var styles = StyleSheet.create({
   container: {
+    paddingTop: 120,
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   card: {
-    width: window.width,
-    height: window.width
+    width: window.width - 80,
+    height: window.width - 80
   },
   yup: {
     borderColor: 'green',

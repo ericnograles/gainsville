@@ -7,9 +7,14 @@ class UserActions {
 
     this.startLogin = this.startLogin.bind(this);
     this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   startLogin() {
+    return true;
+  }
+
+  logout() {
     return true;
   }
 

@@ -12,15 +12,21 @@ class UserStore {
     // Make sure lexical `this` is consistent. Transpiling has some funky side effects.
     this.startLogin = this.startLogin.bind(this);
     this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
 
     this.bindListeners({
       startLogin: UserActions.startLogin,
-      login: UserActions.login
+      login: UserActions.login,
+      logout: UserActions.logout
     });
   }
 
   startLogin() {
     this.setState({status: 'logging_in'});
+  }
+
+  logout() {
+    this.setState({status: 'ready'});
   }
 
   login(payload) {
