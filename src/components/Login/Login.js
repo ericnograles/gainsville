@@ -58,7 +58,7 @@ class Login extends Component {
 
   navigateToSwiper(userData) {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-    this.props.navigator.push({
+    this.props.navigator.replace({
       title: 'Gainsville',
       component: Landing,
       props: {profile: userData}
